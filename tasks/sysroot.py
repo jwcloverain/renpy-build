@@ -44,6 +44,9 @@ def install_linux(c: Context):
     elif c.arch == "aarch64":
         deb_arch = "arm64"
         release = "focal"
+    elif c.arch == "riscv64":
+        deb_arch = "riscv64"
+        release = "focal"
     else:
         raise Exception("Unknown arch {}".format(c.arch))
 
