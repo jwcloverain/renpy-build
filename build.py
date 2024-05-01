@@ -34,6 +34,7 @@ Platform("linux", "x86_64", "2")
 Platform("linux", "i686", "2")
 Platform("linux", "aarch64", "2")
 Platform("linux", "armv7l", "2")
+Platform("linux", "riscv64", "2")
 
 Platform("windows", "x86_64", "2")
 Platform("windows", "i686", "2")
@@ -56,6 +57,7 @@ Platform("web", "wasm", "2")
 Platform("linux", "x86_64", "3")
 Platform("linux", "aarch64", "3")
 Platform("linux", "armv7l", "3")
+Platform("linux", "riscv64", "3")
 
 Platform("windows", "x86_64", "3")
 

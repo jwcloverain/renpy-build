@@ -131,6 +131,8 @@ def build_environment(c):
         c.var("host_platform", "x86_64-pc-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "aarch64"):
         c.var("host_platform", "aarch64-pc-linux-gnu")
+    elif (c.platform == "linux") and (c.arch == "riscv64"):
+        c.var("host_platform", "riscv64-pc-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "i686"):
         c.var("host_platform", "i686-pc-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "armv7l"):
@@ -164,6 +166,8 @@ def build_environment(c):
         c.var("architecture_name", "x86_64-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "aarch64"):
         c.var("architecture_name", "aarch64-linux-gnu")
+    elif (c.platform == "linux") and (c.arch == "riscv64"):
+        c.var("architecture_name", "riscv64-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "i686"):
         c.var("architecture_name", "i386-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "armv7l"):
@@ -231,6 +235,17 @@ def build_environment(c):
 
         c.var("cmake_system_name", "Linux")
         c.var("cmake_system_processor", "aarch64")
+        c.var("cmake_args", "-DCMAKE_FIND_ROOT_PATH='{{ install }};{{ sysroot }}' -DCMAKE_SYSROOT={{ sysroot }}")
+
+    elif (c.platform == "linux") and (c.arch == "riscv64"):
+
+        llvm(c, clang_args="-target {{ host_platform }} --sysroot {{ sysroot }} -fPIC -pthread")
+        c.env("LDFLAGS", "{{ LDFLAGS }} -L{{install}}/lib64")
+        c.env("PKG_CONFIG_LIBDIR", "{{ sysroot }}/usr/lib/{{ architecture_name }}/pkgconfig:{{ sysroot }}/usr/share/pkgconfig")
+        # c.env("PKG_CONFIG_SYSROOT_DIR", "{{ sysroot }}")
+
+        c.var("cmake_system_name", "Linux")
+        c.var("cmake_system_processor", "riscv64")
         c.var("cmake_args", "-DCMAKE_FIND_ROOT_PATH='{{ install }};{{ sysroot }}' -DCMAKE_SYSROOT={{ sysroot }}")
 
     elif (c.platform == "linux") and (c.arch == "i686"):
