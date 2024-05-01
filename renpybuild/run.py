@@ -132,7 +132,7 @@ def build_environment(c):
     elif (c.platform == "linux") and (c.arch == "aarch64"):
         c.var("host_platform", "aarch64-pc-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "riscv64"):
-        c.var("host_platform", "riscv64-pc-linux-gnu")
+        c.var("host_platform", "riscv64-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "i686"):
         c.var("host_platform", "i686-pc-linux-gnu")
     elif (c.platform == "linux") and (c.arch == "armv7l"):
