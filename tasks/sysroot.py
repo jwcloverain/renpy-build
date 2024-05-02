@@ -15,11 +15,12 @@ PACKAGES = [
     'libxxf86vm-dev',
     'libxss-dev',
     'libgl1-mesa-dev',
-    'libesd0-dev',
+    'libwayland-dev',
+    #'libesd0-dev',
     'libdbus-1-dev',
     'libudev-dev',
     'libgl1-mesa-dev',
-    'libgles1-mesa-dev',
+    #'libgles1-mesa-dev',
     'libgles2-mesa-dev',
     'libglu1-mesa-dev',
     'libegl1-mesa-dev',
@@ -165,8 +166,8 @@ def update_wayland_headers(c: Context):
     for i in c.path("{{source}}/wayland-headers/").glob("wayland*.h"):
         c.copy(str(i), "{{ sysroot }}/usr/include/" + i.name)
 
-@task(platforms="linux")
-def update_wayland_pkgconfig(c: Context):
+#@task(platforms="linux")
+#def update_wayland_pkgconfig(c: Context):
 
-    for i in c.path("{{source}}/wayland-pc-files/").glob("wayland*.pc"):
-        c.copy(str(i), "{{ sysroot }}/usr/lib/{{architecture_name}}/pkgconfig/" + i.name)
+    #for i in c.path("{{source}}/wayland-pc-files/").glob("wayland*.pc"):
+        #c.copy(str(i), "{{ sysroot }}/usr/lib/{{architecture_name}}/pkgconfig/" + i.name)
