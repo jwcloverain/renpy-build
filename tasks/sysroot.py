@@ -32,7 +32,7 @@ PACKAGES = [
 ]
 
 
-@task(platforms="linux", archs="x86_64,i686,aarch64", always=True)
+@task(platforms="linux", archs="x86_64,i686,aarch64,riscv64", always=True)
 def install_linux(c: Context):
 
     if c.arch == "i686":
