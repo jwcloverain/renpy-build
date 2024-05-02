@@ -71,7 +71,7 @@ def install_linux(c: Context):
         c.var("packages", ",".join(PACKAGES))
 
         c.run("""mkdir -p "{{ tmp }}/debs" """)
-        c.run("""sudo debootstrap --cache-dir="{{ tmp }}/debs" --variant=minbase --include={{ packages }} --components=main,restricted,universe,multiverse --arch {{deb_arch}} xenial "{{ sysroot }}" """)
+        c.run("""sudo debootstrap --cache-dir="{{ tmp }}/debs" --variant=minbase --include={{ packages }} --components=main,restricted,universe,multiverse --arch {{deb_arch}} focal "{{ sysroot }}" """)
         c.run("""sudo {{source}}/make_links_relative.py {{sysroot}}""")
 
 
