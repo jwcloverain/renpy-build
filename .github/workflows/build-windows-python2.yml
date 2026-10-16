@@ -34,15 +34,12 @@ jobs:
           source tmp/virtualenv.py3/bin/activate
           ./build.py --platform windows --archs x86_64,i686 --pythons 2
 
-      - name: Package build outputs
+      - name: Package the complete Ren'Py engine tree
         run: |
           mkdir -p artifacts
-          tar -czf artifacts/renpy-windows-python2.tar.gz \
-            -C renpy \
-            renpy2.exe \
-            renpy-32.exe \
-            lib/py2-windows-x86_64 \
-            lib/py2-windows-i686
+          tar --exclude-vcs --dereference \
+            -czf artifacts/renpy-windows-python2.tar.gz \
+            -C renpy .
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
