@@ -1,0 +1,52 @@
+name: Build Ren'Py Windows Python 2
+
+on:
+  push:
+    branches:
+      - build7.8.7
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    env:
+      BRANCH: build7.8.7
+      RENPY_BRANCH: 7.8.7fix
+      PYGAME_SDL2_BRANCH: 7.8.7
+      RENPYWEB_BRANCH: 7.8.7
+
+    steps:
+      - name: Check out renpy-build
+        uses: actions/checkout@v4
+        with:
+          ref: build7.8.7
+          fetch-depth: 0
+
+      - name: Install build dependencies and check out Ren'Py sources
+        run: bash prepare.sh
+
+      - name: Build Windows Python 2 binaries
+        run: |
+          source tmp/virtualenv.py3/bin/activate
+          ./build.py --platform windows --archs x86_64,i686 --pythons 2
+
+      - name: Package build outputs
+        run: |
+          mkdir -p artifacts
+          tar -czf artifacts/renpy-windows-python2.tar.gz \
+            -C renpy \
+            renpy2.exe \
+            renpy-32.exe \
+            lib/py2-windows-x86_64 \
+            lib/py2-windows-i686
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: renpy-windows-python2
+          path: artifacts/renpy-windows-python2.tar.gz
+          if-no-files-found: error

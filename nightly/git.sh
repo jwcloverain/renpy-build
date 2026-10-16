@@ -1,38 +1,33 @@
 #!/bin/bash
 
 update () {
-    if [ -d "$BASE/$2/.git" ]; then
-        pushd "$BASE/$2"
-        git reset --hard
-        git checkout $BRANCH
-        git pull
+    remote="$1"
+    dir="${2:-.}"
+    branch="${3:-$BRANCH}"
+    path="$BASE/$dir"
+
+    if [ -d "$path/.git" ]; then
+        pushd "$path"
+        git remote set-url origin "$remote"
+        git fetch origin "$branch:refs/remotes/origin/$branch"
+        git checkout -B "$branch" "origin/$branch"
         popd
     else
-        if [ -e "$REFS/$2/.git" ]; then
-            if [ $REFS = $BASE ]; then
-                git reset --hard
-                git pull
-            else
-                git clone $1 "$BASE/$2" --reference "$REFS/$2"
-            fi
-
-            pushd "$BASE/$2"
-            git checkout $BRANCH
-            popd
-
-        else
-            git clone $1 "$BASE/$2"
-            pushd "$BASE/$2"
-            git checkout $BRANCH
-            popd
-        fi
+        git clone --branch "$branch" "$remote" "$path"
     fi
 }
 
-update $(git remote get-url origin)
-update https://github.com/jwcloverain/renpy renpy
-update https://github.com/renpy/pygame_sdl2 pygame_sdl2
-update https://github.com/renpy/renpyweb renpyweb
+BRANCH="${BRANCH:-$(git branch --show-current)}"
+if [ -z "$BRANCH" ]; then
+    echo "BRANCH must be set when HEAD is detached." >&2
+    exit 1
+fi
+
+# The build repository follows BRANCH; each dependency can use its own branch.
+update "$(git remote get-url origin)" . "$BRANCH"
+update https://github.com/jwcloverain/renpy renpy "${RENPY_BRANCH:-$BRANCH}"
+update https://github.com/jwcloverain/pygame_sdl2 pygame_sdl2 "${PYGAME_SDL2_BRANCH:-$BRANCH}"
+update https://github.com/jwcloverain/renpyweb renpyweb "${RENPYWEB_BRANCH:-$BRANCH}"
 
 rm -Rf "$BASE/renpy/module/gen"
 rm -Rf "$BASE/renpy/module/gen3"
