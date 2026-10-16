@@ -30,7 +30,7 @@ update () {
 }
 
 update $(git remote get-url origin)
-update https://github.com/renpy/renpy renpy
+update https://github.com/jwcloverain/renpy renpy
 update https://github.com/renpy/pygame_sdl2 pygame_sdl2
 update https://github.com/renpy/renpyweb renpyweb
 
