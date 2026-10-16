@@ -251,7 +251,11 @@ def python2(c: Context):
     for base in search:
         c.compile(base)
 
-    for i in PYTHON27_MODULES.split():
+    modules = PYTHON27_MODULES.split()
+    if not c.path("{{ pytmp }}/steam/steamapi.py").is_file():
+        modules.remove("steamapi.pyo")
+
+    for i in modules:
 
         for d in search:
             src = d / i
@@ -492,6 +496,9 @@ def python3(c: Context):
     # The list of rules.
     rules = set(PY3_MODULES.split())
     used_rules = set()
+
+    if not c.path("{{ pytmp }}/steam/steamapi.py").is_file():
+        rules.discard("steamapi")
 
     if c.platform == "web":
         rules.remove("re")
